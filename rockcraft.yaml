@@ -1,0 +1,38 @@
+name: charmed-postgresql # the name of your ROCK
+base: ubuntu:22.04 # the base environment for this ROCK
+version: '14.0' # just for humans. Semantic versioning is recommended
+summary: PostgreSQL in a ROCK. # 79 char long summary
+description: |
+    The PostgreSQL ROCK is created using the
+    charmed-postgresql-snap and includes all of the
+    components needed to run PostgreSQL in your Kubernetes
+    cluster.
+license: Apache-2.0 # your application's SPDX license
+cmd:
+    - /usr/bin/setpriv
+    - --clear-groups
+    - --reuid
+    - postgres
+    - --regid
+    - postgres
+    - --
+    - /usr/bin/patroni
+platforms: # The platforms this ROCK should be built on and run on
+    amd64:
+
+parts:
+    postgresql-snap:
+        plugin: nil
+        stage-snaps:
+          - charmed-postgresql/14/edge/charm-fixes
+    dep-debs:
+        plugin: nil
+        stage-packages:
+            - util-linux
+    non-root-user:
+        plugin: nil
+        after: [postgresql-snap]
+        overlay-script: |
+            # Create a user in the $CRAFT_OVERLAY chroot
+            groupadd -R $CRAFT_OVERLAY -g  584788 postgres
+            useradd -R $CRAFT_OVERLAY -M -r -g postgres -u 584788 postgres
