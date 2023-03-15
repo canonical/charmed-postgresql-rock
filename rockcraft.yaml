@@ -24,7 +24,7 @@ parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-          - charmed-postgresql/14/edge/charm-fixes
+            - charmed-postgresql/14/edge/charm-fixes
     dep-debs:
         plugin: nil
         stage-packages:
