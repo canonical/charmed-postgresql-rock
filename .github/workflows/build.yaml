@@ -1,6 +1,7 @@
 name: Build ROCK
 
 on:
+  pull_request:
   workflow_call:
 
 jobs:
