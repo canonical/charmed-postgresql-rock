@@ -32,5 +32,5 @@ docker run --rm -it <username>/charmed-postgresql:<tag>
 ## License
 The PostgreSQL ROCK is free software, distributed under the Apache
 Software License, version 2.0. See
-[LICENSE](https://github.com/canonical/charmed-postgresql-rock/blob/14-22.04/LICENSE)
+[LICENSE](https://github.com/canonical/charmed-postgresql-rock/blob/14-22.04/licenses/LICENSE-rock)
 for more information.
