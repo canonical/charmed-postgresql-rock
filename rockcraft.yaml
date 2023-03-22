@@ -25,10 +25,6 @@ parts:
         plugin: nil
         stage-snaps:
             - charmed-postgresql/14/edge/charm-fixes
-    dep-debs:
-        plugin: nil
-        stage-packages:
-            - util-linux
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
