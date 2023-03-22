@@ -11,7 +11,7 @@ cd charmed-postgresql-rock
 ```
 ### Installing Prerequisites
 ```bash
-sudo snap install rockcraft --edge
+sudo snap install rockcraft --edge --classic
 sudo snap install docker
 sudo snap install lxd
 sudo snap install skopeo --edge --devmode
