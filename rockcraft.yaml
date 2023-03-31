@@ -1,6 +1,6 @@
 name: charmed-postgresql # the name of your ROCK
 base: ubuntu:22.04 # the base environment for this ROCK
-version: '14.0' # just for humans. Semantic versioning is recommended
+version: '14.7' # just for humans. Semantic versioning is recommended
 summary: PostgreSQL in a ROCK. # 79 char long summary
 description: |
     The PostgreSQL ROCK is created using the
@@ -24,7 +24,11 @@ parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/14/edge/charm-fixes
+            - charmed-postgresql/14/edge
+        stage-packages:
+            - python3
+        overlay-packages:
+            - ca-certificates
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
@@ -32,3 +36,19 @@ parts:
             # Create a user in the $CRAFT_OVERLAY chroot
             groupadd -R $CRAFT_OVERLAY -g  584788 postgres
             useradd -R $CRAFT_OVERLAY -M -r -g postgres -u 584788 postgres
+        override-prime: |
+            craftctl default
+            # This is only needed until this bug is resolved with pebble
+            # https://github.com/canonical/pebble/issues/189
+            mkdir -p $CRAFT_PRIME/home/postgres
+            array=( .bash_logout .bashrc .profile )
+            for i in "${array[@]}"
+            do
+                cp /etc/skel/"$i" $CRAFT_PRIME/home/postgres
+                chown 584788 $CRAFT_PRIME/home/postgres/"$i"
+            done
+            chown -R 584788 $CRAFT_PRIME/var/log/pgbackrest
+            chown -R 584788 $CRAFT_PRIME/var/log/postgresql
+            chown -R 584788 $CRAFT_PRIME/var/log/prometheus
+            mkdir -p $CRAFT_PRIME/var/run/postgresql
+            chown -R 584788 $CRAFT_PRIME/var/run/postgresql
