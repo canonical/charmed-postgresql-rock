@@ -8,15 +8,12 @@ description: |
     components needed to run PostgreSQL in your Kubernetes
     cluster.
 license: Apache-2.0 # your application's SPDX license
-cmd:
-    - /usr/bin/setpriv
-    - --clear-groups
-    - --reuid
-    - postgres
-    - --regid
-    - postgres
-    - --
-    - /usr/bin/patroni
+services:
+    postgresql:
+        override: replace
+        command: patroni
+        user: postgres
+        group: postgres
 platforms: # The platforms this ROCK should be built on and run on
     amd64:
 
