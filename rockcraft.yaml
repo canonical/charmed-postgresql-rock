@@ -55,4 +55,5 @@ parts:
             echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             dpkg-query -f \
             '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W \
+            --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
