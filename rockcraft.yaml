@@ -41,5 +41,15 @@ parts:
             chown -R 584788 $CRAFT_PRIME/var/log/pgbackrest
             chown -R 584788 $CRAFT_PRIME/var/log/postgresql
             chown -R 584788 $CRAFT_PRIME/var/log/prometheus
+            mkdir -p $CRAFT_PRIME/var/log/pgbouncer
+            chown -R 584788 $CRAFT_PRIME/var/log/pgbouncer
             mkdir -p $CRAFT_PRIME/var/run/postgresql
             chown -R 584788 $CRAFT_PRIME/var/run/postgresql
+            mkdir -p $CRAFT_PRIME/var/lib/pgbouncer
+            chown -R 584788 $CRAFT_PRIME/var/lib/pgbouncer
+            # Generate dpkg.query
+            mkdir -p $CRAFT_PRIME/usr/share/rocks
+            echo "# os-release" > $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            cat /etc/os-release >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            dpkg-query -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
