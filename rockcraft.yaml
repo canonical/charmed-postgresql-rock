@@ -51,7 +51,8 @@ parts:
             # Generate dpkg.query
             mkdir -p $CRAFT_PRIME/usr/share/rocks
             echo "# os-release" > $CRAFT_PRIME/usr/share/rocks/dpkg.query
-            cat /etc/os-release >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            cat ${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/etc/os-release \
+            >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             dpkg-query -f \
             '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W \
