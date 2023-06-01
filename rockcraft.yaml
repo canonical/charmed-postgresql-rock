@@ -53,4 +53,6 @@ parts:
             echo "# os-release" > $CRAFT_PRIME/usr/share/rocks/dpkg.query
             cat /etc/os-release >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
-            dpkg-query -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            dpkg-query -f \
+            '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W \
+            >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
