@@ -20,6 +20,7 @@ parts:
             - python3
         overlay-packages:
             - ca-certificates
+            - tzdata
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
@@ -41,5 +42,26 @@ parts:
             chown -R 584788 $CRAFT_PRIME/var/log/pgbackrest
             chown -R 584788 $CRAFT_PRIME/var/log/postgresql
             chown -R 584788 $CRAFT_PRIME/var/log/prometheus
+            mkdir -p $CRAFT_PRIME/var/log/pgbouncer
+            chown -R 584788 $CRAFT_PRIME/var/log/pgbouncer
             mkdir -p $CRAFT_PRIME/var/run/postgresql
             chown -R 584788 $CRAFT_PRIME/var/run/postgresql
+            mkdir -p $CRAFT_PRIME/var/lib/pgbouncer
+            chown -R 584788 $CRAFT_PRIME/var/lib/pgbouncer
+            # Generate dpkg.query
+            mkdir -p $CRAFT_PRIME/usr/share/rocks
+            echo "# os-release" > $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            cat \
+            ${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/etc/os-release \
+            >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            declare -a fields
+            fields+=('${db:Status-Abbrev}')
+            fields+=('${binary:Package}')
+            fields+=('${Version}')
+            fields+=('${source:Package}')
+            fields+=('${Source:Version}')
+            printf -v dpkg_ops '%s,' "${fields[@]}"
+            dpkg-query -W -f "${dpkg_ops}\n" \
+            --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ \
+            >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
