@@ -63,5 +63,5 @@ parts:
             fields+=('${Source:Version}')
             printf -v dpkg_ops '%s,' "${fields[@]}"
             dpkg-query -W -f "${dpkg_ops}\n" \
-            --root=${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/ \
+            --root=${CRAFT_PROJECT_DIR}/../parts/postgresql-snap/layer/ \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
