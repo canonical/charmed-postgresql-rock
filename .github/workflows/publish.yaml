@@ -29,9 +29,24 @@ jobs:
       - name: Install yq
         run: |
           sudo snap install yq
+      - name: Install Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      - name: Set tag
+        run: |
+          version=$(yq '(.version|split("-"))[0]' rockcraft.yaml)
+          base=$(yq '(.base|split(":"))[1]' rockcraft.yaml)
+          echo "tag=${version}-${base}_edge" >> "$GITHUB_ENV"
       - uses: actions/download-artifact@v3
         with:
           name: postgresql-rock
+      - name: Create SBOM
+        run: syft charmed-postgresql_${{env.tag}}_amd64.rock -o spdx-json=charmed-postgresql_${{env.tag}}_amd64.rock.spdx.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          path: "charmed-postgresql_${{env.tag}}_amd64.rock.spdx.json"
+          name: charmed-postgresql_${{env.tag}}_amd64.rock.spdx.json
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -40,10 +55,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Import and push to GHCR
         run: |
-          version=$(yq '(.version|split("-"))[0]' rockcraft.yaml)
-          base=$(yq '(.base|split(":"))[1]' rockcraft.yaml)
-          tag=${version}-${base}_edge
           sudo skopeo --insecure-policy copy \
-            oci-archive:charmed-postgresql_${tag}_amd64.rock \
-            docker-daemon:ghcr.io/canonical/charmed-postgresql:${tag}
-          docker push ghcr.io/canonical/charmed-postgresql:${tag}
+            oci-archive:charmed-postgresql_${{env.tag}}_amd64.rock \
+            docker-daemon:ghcr.io/canonical/charmed-postgresql:${{env.tag}}
+          docker push ghcr.io/canonical/charmed-postgresql:${{env.tag}}
