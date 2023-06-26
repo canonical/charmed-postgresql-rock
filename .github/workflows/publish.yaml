@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
+  sbom:
+    uses: ./.github/workflows/sbom.yaml
   publish:
-    needs: build
+    needs: sbom
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
