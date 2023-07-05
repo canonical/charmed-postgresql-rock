@@ -21,6 +21,7 @@ parts:
         overlay-packages:
             - ca-certificates
             - tzdata
+            - logrotate
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
