@@ -1,6 +1,6 @@
 name: charmed-postgresql # the name of your ROCK
 base: ubuntu:22.04 # the base environment for this ROCK
-version: '14.8' # just for humans. Semantic versioning is recommended
+version: '14.9' # just for humans. Semantic versioning is recommended
 summary: PostgreSQL in a ROCK. # 79 char long summary
 description: |
     The PostgreSQL ROCK is created using the
