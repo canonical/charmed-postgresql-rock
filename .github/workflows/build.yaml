@@ -21,7 +21,7 @@ jobs:
         run: |
           app_version=$(yq '.version' rockcraft.yaml)
           version=$(yq '(.version|split("-"))[0]' rockcraft.yaml)
-          base=$(yq '(.base|split(":"))[1]' rockcraft.yaml)
+          base=$(yq '(.base|split("@"))[1]' rockcraft.yaml)
           tag=${version}-${base}_edge
           sed -i "s/${app_version}/${base}/g" rockcraft.yaml
           rockcraft pack
