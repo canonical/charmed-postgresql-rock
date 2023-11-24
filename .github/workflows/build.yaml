@@ -23,7 +23,7 @@ jobs:
           version=$(yq '(.version|split("-"))[0]' rockcraft.yaml)
           base=$(yq '(.base|split(":"))[1]' rockcraft.yaml)
           tag=${version}-${base}_edge
-          sed -i "s/${app_version}/${tag}/g" rockcraft.yaml
+          sed -i "s/${app_version}/${base}/g" rockcraft.yaml
           rockcraft pack
       - name: Upload locally built ROCK artifact
         uses: actions/upload-artifact@v3
