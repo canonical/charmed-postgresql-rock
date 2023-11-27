@@ -41,7 +41,7 @@ jobs:
       - name: Import and push to GHCR
         run: |
           version=$(yq '(.version|split("-"))[0]' rockcraft.yaml)
-          base=$(yq '(.base|split(":"))[1]' rockcraft.yaml)
+          base=$(yq '(.base|split("@"))[1]' rockcraft.yaml)
           tag=${version}-${base}_edge
           sudo skopeo --insecure-policy copy \
             oci-archive:charmed-postgresql_${tag}_amd64.rock \
