@@ -66,20 +66,20 @@ parts:
             dpkg-query -W -f "${dpkg_ops}\n" \
             --root=${CRAFT_PROJECT_DIR}/../parts/postgresql-snap/layer/ \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/postgis.control \
-            $CRAFT_PRIME/usr/share/postgresql/14/extension/postgis-3.control
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/ \
-            address_standardizer.control $CRAFT_PRIME/usr/share/postgresql/ \
-            14/extension/address_standardizer-3.control
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/ \
-            address_standardizer_data_us.control $CRAFT_PRIME/usr/share/ \
-            postgresql/14/extension/address_standardizer_data_us-3.control
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/ \
-            postgis_raster.control $CRAFT_PRIME/usr/share/postgresql/14/ \
-            extension/postgis_raster-3.control
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/ \
-            postgis_tiger_geocoder.control $CRAFT_PRIME/usr/share/ \
-            postgresql/14/extension/postgis_tiger_geocoder-3.control
-            ln $CRAFT_PRIME/usr/share/postgresql/14/extension/ \
-            postgis_topology.control $CRAFT_PRIME/usr/share/ \
-            postgresql/14/extension/postgis_topology-3.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/postgis-3.control \
+            $CRAFT_PRIME/usr/share/postgresql/14/extension/postgis.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/\
+            address_standardizer-3.control $CRAFT_PRIME/usr/share/postgresql/\
+            14/extension/address_standardizer.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/\
+            address_standardizer_data_us-3.control $CRAFT_PRIME/usr/share/\
+            postgresql/14/extension/address_standardizer_data_us.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/\
+            postgis_raster-3.control $CRAFT_PRIME/usr/share/postgresql/14/\
+            extension/postgis_raster.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/\
+            postgis_tiger_geocoder-3.control $CRAFT_PRIME/usr/share/\
+            postgresql/14/extension/postgis_tiger_geocoder.control
+            ln -f $CRAFT_PRIME/usr/share/postgresql/14/extension/\
+            postgis_topology-3.control $CRAFT_PRIME/usr/share/\
+            postgresql/14/extension/postgis_topology.control
