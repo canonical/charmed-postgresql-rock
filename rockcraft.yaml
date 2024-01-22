@@ -69,7 +69,8 @@ parts:
             # PostgreSQL extensions
             pushd "${CRAFT_PRIME}/usr/share/postgresql/14/extension"
                 ln -f postgis-3.control postgis.control
-                ln -f address_standardizer-3.control address_standardizer.control
+                ln -f address_standardizer-3.control \
+                      address_standardizer.control
                 ln -f address_standardizer_data_us-3.control \
                       address_standardizer_data_us.control
                 ln -f postgis_raster-3.control postgis_raster.control
@@ -78,7 +79,6 @@ parts:
                 ln -f postgis_topology-3.control postgis_topology.control
                 ln -f postgis_topology-3.control postgis_topology.control
             popd
-            
             # Required for postgis_raster and pltcl PostgreSQL extensions
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CRAFT_PRIME/usr/lib/ \
                 $CRAFT_ARCH_TRIPLET/blas:$CRAFT_PRIME/usr/lib/ \
