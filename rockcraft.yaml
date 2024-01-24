@@ -10,12 +10,13 @@ description: |
 license: Apache-2.0 # your application's SPDX license
 platforms: # The platforms this ROCK should be built on and run on
     amd64:
+    arm64:
 
 parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/14/edge
+            - charmed-postgresql/14/edge/arm64build
         stage-packages:
             - python3
         overlay-packages:
