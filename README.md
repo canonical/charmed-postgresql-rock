@@ -1,4 +1,6 @@
-# PostgreSQL ROCK
+# Charmed PostgreSQL ROCK
+[![Publish ROCK](https://github.com/canonical/charmed-postgresql-rock/actions/workflows/publish.yaml/badge.svg)](https://github.com/canonical/charmed-postgresql-rock/actions/workflows/publish.yaml)
+
 This repository contains the packaging metadata for creating a ROCK of PostgreSQL built from the official Ubuntu repositories.  For more information on ROCKs, visit the [rockcraft Github](https://github.com/canonical/rockcraft). 
 
 ## Building the ROCK
