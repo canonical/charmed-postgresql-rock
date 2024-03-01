@@ -1,0 +1,27 @@
+# Copyright 2024 Canonical Ltd.
+# See LICENSE file for licensing details.
+name: Tests
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install tox
+        run: pipx install tox
+      - name: Run linters
+        run: tox run -e lint
+
+  build:
+    name: Build rock
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v12.5.0
