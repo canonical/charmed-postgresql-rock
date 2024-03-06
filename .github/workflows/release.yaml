@@ -1,6 +1,6 @@
 # Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
-name: Release to GitHub Container Registry
+name: Release to GHCR
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
