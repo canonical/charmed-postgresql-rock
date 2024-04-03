@@ -1,0 +1,61 @@
+# Copyright 2024 Canonical Ltd.
+# See LICENSE file for licensing details.
+name: Release to GHCR
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - 14-22.04
+
+jobs:
+  build:
+    name: Build rock
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v12.7.1
+
+  release:
+    name: Release rock
+    needs:
+      - build
+    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v12.7.1
+    with:
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+    permissions:
+      packages: write  # Needed to publish to GitHub Container Registry
+
+  sbom:
+    name: Generate Software Bill of Materials
+    needs:
+      - build
+      # Run after release so that rock cannot be (maliciously) modified between build & release
+      - release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Install Syft
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      - name: Download rock package(s)
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ needs.build.outputs.artifact-prefix }}-*
+          merge-multiple: true
+      - name: Generate SBOM(s)
+        shell: python
+        run: |
+          import pathlib
+          import subprocess
+
+          for rock_file in pathlib.Path(".").glob("*.rock"):
+              subprocess.run(
+                  ["syft", rock_file.name, "--output", f"spdx-json={rock_file.name}.spdx.json"],
+                  check=True,
+              )
+      - name: Upload SBOM(s)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ needs.build.outputs.artifact-prefix }}
+          path: '*.spdx.json'
+          if-no-files-found: error

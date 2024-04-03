@@ -1,15 +1,16 @@
-name: charmed-postgresql # the name of your ROCK
-base: ubuntu@22.04 # the base environment for this ROCK
-version: '14.9' # just for humans. Semantic versioning is recommended
-summary: PostgreSQL in a ROCK. # 79 char long summary
+name: charmed-postgresql
+base: ubuntu@22.04
+version: '14.11'
+summary: PostgreSQL in a ROCK.
 description: |
     The PostgreSQL ROCK is created using the
     charmed-postgresql-snap and includes all of the
     components needed to run PostgreSQL in your Kubernetes
     cluster.
-license: Apache-2.0 # your application's SPDX license
-platforms: # The platforms this ROCK should be built on and run on
+license: Apache-2.0
+platforms:
     amd64:
+    arm64:
 
 parts:
     postgresql-snap:
@@ -22,6 +23,11 @@ parts:
             - ca-certificates
             - tzdata
             - logrotate
+            - libfreetype6
+            - libjson-c5
+            - libssh-4
+            - liblapack3
+            - libedit2
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
@@ -66,3 +72,16 @@ parts:
             dpkg-query -W -f "${dpkg_ops}\n" \
             --root=${CRAFT_PROJECT_DIR}/../parts/postgresql-snap/layer/ \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
+            # PostgreSQL extensions
+            pushd "${CRAFT_PRIME}/usr/share/postgresql/14/extension"
+                ln -f postgis-3.control postgis.control
+                ln -f address_standardizer-3.control \
+                      address_standardizer.control
+                ln -f address_standardizer_data_us-3.control \
+                      address_standardizer_data_us.control
+                ln -f postgis_raster-3.control postgis_raster.control
+                ln -f postgis_tiger_geocoder-3.control \
+                      postgis_tiger_geocoder.control
+                ln -f postgis_topology-3.control postgis_topology.control
+                ln -f postgis_topology-3.control postgis_topology.control
+            popd
