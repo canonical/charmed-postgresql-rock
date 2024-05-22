@@ -1,9 +1,9 @@
 name: charmed-postgresql
 base: ubuntu@22.04
 version: '14.11'
-summary: PostgreSQL in a ROCK.
+summary: PostgreSQL in a rock.
 description: |
-    The PostgreSQL ROCK is created using the
+    The PostgreSQL rock is created using the
     charmed-postgresql-snap and includes all of the
     components needed to run PostgreSQL in your Kubernetes
     cluster.
