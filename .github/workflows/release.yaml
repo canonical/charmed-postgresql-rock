@@ -15,17 +15,18 @@ on:
 jobs:
   build:
     name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v16.7.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v17.0.0
 
   release:
     name: Release rock
     needs:
       - build
-    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v16.7.0
+    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v17.0.0
     with:
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
     permissions:
       packages: write  # Needed to publish to GitHub Container Registry
+      contents: write  # Needed to create GitHub release
 
   sbom:
     name: Generate Software Bill of Materials
