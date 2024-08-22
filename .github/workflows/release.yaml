@@ -10,6 +10,8 @@ on:
   push:
     branches:
       - 14-22.04
+    paths:
+      - rockcraft.yaml
   workflow_dispatch:
 
 jobs:
