@@ -12,8 +12,8 @@ on:
 jobs:
   lint:
     name: Lint
-    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v21.0.1
 
   build:
     name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v21.0.1
