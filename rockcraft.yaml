@@ -1,6 +1,6 @@
 name: charmed-postgresql
-base: ubuntu@22.04
-version: '14.13'
+base: ubuntu@24.04
+version: '16.4'
 summary: PostgreSQL in a rock.
 description: |
     The PostgreSQL rock is created using the
@@ -16,7 +16,7 @@ parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/14/edge
+            - charmed-postgresql/16/edge
         stage-packages:
             - python3
         overlay-packages:
@@ -59,7 +59,7 @@ parts:
             mkdir -p $CRAFT_PRIME/usr/share/rocks
             echo "# os-release" > $CRAFT_PRIME/usr/share/rocks/dpkg.query
             cat \
-            ${CRAFT_PROJECT_DIR}/../bundles/ubuntu-22.04/rootfs/etc/os-release \
+            ${CRAFT_PROJECT_DIR}/../bundles/ubuntu-24.04/rootfs/etc/os-release \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             echo "# dpkg-query" >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             declare -a fields
@@ -73,7 +73,7 @@ parts:
             --root=${CRAFT_PROJECT_DIR}/../parts/postgresql-snap/layer/ \
             >> $CRAFT_PRIME/usr/share/rocks/dpkg.query
             # PostgreSQL extensions
-            pushd "${CRAFT_PRIME}/usr/share/postgresql/14/extension"
+            pushd "${CRAFT_PRIME}/usr/share/postgresql/16/extension"
                 ln -f postgis-3.control postgis.control
                 ln -f address_standardizer-3.control \
                       address_standardizer.control
