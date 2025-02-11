@@ -28,6 +28,16 @@ parts:
             - libssh-4
             - liblapack3
             - libedit2
+    non-charm-packages:
+        plugin: nil
+        after: [postgresql-snap]
+        build-packages:
+            - libpq-dev
+            - libldap2-dev
+            - libsasl2-dev
+            - python3-dev
+        overlay-script: |
+            python3 -m pip install --no-cache-dir "postgresql-ldap-sync==0.2.0"
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
