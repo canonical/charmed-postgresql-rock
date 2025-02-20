@@ -27,6 +27,7 @@ parts:
             - libjson-c5
             - libssh-4
             - liblapack3
+            - libldap-2.5-0
             - libedit2
     non-charm-packages:
         plugin: nil
