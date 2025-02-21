@@ -37,7 +37,7 @@ parts:
             - libldap-2.5-0
             - libedit2
         override-build: |
-            python3 -m pip install --no-cache-dir "postgresql-ldap-sync==0.2.0"
+            python3 -m pip install --no-cache-dir "postgresql-ldap-sync==0.2.1"
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
