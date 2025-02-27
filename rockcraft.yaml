@@ -17,6 +17,13 @@ parts:
         plugin: nil
         stage-snaps:
             - charmed-postgresql/14/edge
+        stage:
+            - "-bin/python*"
+            - "-lib"
+            - "-lib64"
+    postgresql-debs:
+        plugin: nil
+        after: [postgresql-snap]
         stage-packages:
             - python3
         overlay-packages:
@@ -30,7 +37,7 @@ parts:
             - libedit2
     non-root-user:
         plugin: nil
-        after: [postgresql-snap]
+        after: [postgresql-debs]
         overlay-script: |
             # Create a user in the $CRAFT_OVERLAY chroot
             groupadd -R $CRAFT_OVERLAY -g  584788 postgres
