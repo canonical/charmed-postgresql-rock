@@ -9,7 +9,7 @@ concurrency:
 on:
   push:
     branches:
-      - 14-22.04
+      - '*-*.04'
     paths:
       - rockcraft.yaml
   workflow_dispatch:
