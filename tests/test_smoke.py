@@ -2,8 +2,6 @@ import yaml
 import subprocess
 import pytest
 
-digest = None
-
 
 def test_install():
     with open("rockcraft.yaml") as file:
@@ -11,22 +9,12 @@ def test_install():
         name = rockcraft["name"]
         version = rockcraft["version"]
 
-        global digest
-        digest = subprocess.run(
-            [
-                "skopeo",
-                "inspect",
-                f"oci-archive:{name}_{version}_amd64.rock",
-                "--format",
-                "{{ .Digest }}",
-            ]
-        )
         subprocess.run(
             [
                 "skopeo",
                 "copy",
                 f"oci-archive:{name}_{version}_amd64.rock",
-                f"docker-daemon:{name}@{digest}",
+                f"docker-daemon:{name}:test",
             ]
         )
 
@@ -49,7 +37,15 @@ def test_version():
         version = rockcraft["version"]
         app_version = (
             subprocess.check_output(
-                ["docker", "run", f"{name}@{digest}", "pg_isready", "--version"]
+                [
+                    "docker",
+                    "run",
+                    "--entrypoint",
+                    "bash",
+                    f"{name}:test",
+                    "pg_isready",
+                    "--version",
+                ]
             )
             .decode()
             .split(" ")[2]
