@@ -1,9 +1,8 @@
 import yaml
 import subprocess
-import pytest
 
 
-def test_install():
+def test_upload():
     with open("rockcraft.yaml") as file:
         rockcraft = yaml.safe_load(file)
         name = rockcraft["name"]
@@ -19,17 +18,54 @@ def test_install():
         )
 
 
-@pytest.mark.run(after="test_install")
 def test_all_apps():
-    pass
+    with open("rockcraft.yaml") as file:
+        rockcraft = yaml.safe_load(file)
+        name = rockcraft["name"]
+        version = rockcraft["version"]
+        major_version = version.split(".")[0]
+
+        override = {
+            "pgbackrest": "version",
+        }
+
+        apps = [
+            "/usr/bin/createuser",
+            "/usr/bin/pg_archivecleanup",
+            "/usr/bin/pg_isready",
+            "/usr/bin/pg_restore",
+            "/usr/bin/pg_config",
+            "/usr/bin/pg_dump",
+            "/usr/bin/pg_recvlogical",
+            "/usr/bin/pg_basebackup",
+            f"/usr/lib/postgresql/{major_version}/bin/pg_ctl",
+            "/usr/bin/pg_dumpall",
+            "/usr/bin/pg_receivewal",
+            "/usr/bin/pgbackrest",
+            "/usr/bin/pgbench",
+            "/usr/sbin/pgbouncer",
+            "/usr/bin/psql",
+            "/usr/bin/syncobj_admin",
+        ]
+
+        for app in apps:
+            print(f"Running {app}...")
+            try:
+                subprocess.check_output(
+                    [
+                        "docker",
+                        "run",
+                        "--entrypoint",
+                        app,
+                        f"{name}:test",
+                        override.get(app, "--help"),
+                    ]
+                )
+            except subprocess.CalledProcessError as e:
+                print(e)
+                raise e
 
 
-@pytest.mark.run(after="test_install")
-def test_all_services():
-    pass
-
-
-@pytest.mark.run(after="test_install")
 def test_version():
     with open("rockcraft.yaml") as file:
         rockcraft = yaml.safe_load(file)
