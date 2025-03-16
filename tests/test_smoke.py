@@ -41,9 +41,8 @@ def test_version():
                     "docker",
                     "run",
                     "--entrypoint",
-                    "bash",
+                    "/usr/bin/pg_isready",
                     f"{name}:test",
-                    "pg_isready",
                     "--version",
                 ]
             )
