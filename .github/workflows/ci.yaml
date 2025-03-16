@@ -17,7 +17,6 @@ jobs:
   build:
     name: Build rock
     uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v30.2.0
-
   smoke:
     name: Smoke test rock
     runs-on: ubuntu-latest
@@ -35,6 +34,10 @@ jobs:
         run: |
           pipx install tox
           pipx install poetry
+      - name: Install skopeo
+        run: |
+          sudo apt-get update
+          sudo apt-get install skopeo -y
       - name: Download snap package(s)
         uses: actions/download-artifact@v4
         with:
