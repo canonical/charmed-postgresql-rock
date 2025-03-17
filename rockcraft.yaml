@@ -29,6 +29,7 @@ parts:
             - libtirpc-dev
             - liblapack3
             - libedit2
+            - libevent-2.1-7t64
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
