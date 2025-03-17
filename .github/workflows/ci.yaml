@@ -34,7 +34,7 @@ jobs:
         run: |
           pipx install tox
           pipx install poetry
-      - name: Download snap package(s)
+      - name: Download rock(s)
         uses: actions/download-artifact@v4
         with:
           pattern: ${{ needs.build.outputs.artifact-prefix }}-*
