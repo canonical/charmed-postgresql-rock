@@ -17,3 +17,27 @@ jobs:
   build:
     name: Build rock
     uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v30.2.0
+  smoke:
+    name: Smoke test rock
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - lint
+      - build
+    steps:
+      - name: Uninstall Postgresql
+        run: |
+          sudo apt --purge remove postgresql*
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install tox & poetry
+        run: |
+          pipx install tox
+          pipx install poetry
+      - name: Download rock(s)
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ needs.build.outputs.artifact-prefix }}-*
+          merge-multiple: true
+      - name: Run tests
+        run: tox run -e smoke
