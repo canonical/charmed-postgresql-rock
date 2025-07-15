@@ -1,5 +1,8 @@
-import yaml
+# Copyright 2025 Canonical Ltd.
+# See LICENSE file for licensing details.
 import subprocess
+
+import yaml
 
 
 def test_upload():
@@ -8,14 +11,12 @@ def test_upload():
         name = rockcraft["name"]
         version = rockcraft["version"]
 
-        subprocess.run(
-            [
-                "skopeo",
-                "copy",
-                f"oci-archive:{name}_{version}_amd64.rock",
-                f"docker-daemon:{name}:test",
-            ]
-        )
+        subprocess.run([
+            "skopeo",
+            "copy",
+            f"oci-archive:{name}_{version}_amd64.rock",
+            f"docker-daemon:{name}:test",
+        ])
 
 
 def test_all_apps():
@@ -51,16 +52,14 @@ def test_all_apps():
         for app in apps:
             print(f"Running {app}...")
             try:
-                subprocess.check_output(
-                    [
-                        "docker",
-                        "run",
-                        "--entrypoint",
-                        app,
-                        f"{name}:test",
-                        override.get(app, "--help"),
-                    ]
-                )
+                subprocess.check_output([
+                    "docker",
+                    "run",
+                    "--entrypoint",
+                    app,
+                    f"{name}:test",
+                    override.get(app, "--help"),
+                ])
             except subprocess.CalledProcessError as e:
                 print(e)
                 raise e
@@ -72,16 +71,14 @@ def test_version():
         name = rockcraft["name"]
         version = rockcraft["version"]
         app_version = (
-            subprocess.check_output(
-                [
-                    "docker",
-                    "run",
-                    "--entrypoint",
-                    "/usr/bin/pg_isready",
-                    f"{name}:test",
-                    "--version",
-                ]
-            )
+            subprocess.check_output([
+                "docker",
+                "run",
+                "--entrypoint",
+                "/usr/bin/pg_isready",
+                f"{name}:test",
+                "--version",
+            ])
             .decode()
             .split(" ")[2]
         )
