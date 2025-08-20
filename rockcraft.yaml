@@ -16,7 +16,7 @@ parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/16/edge
+            - charmed-postgresql/16/edge/neppel
         stage-packages:
             - python3
         overlay-packages:
