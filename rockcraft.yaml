@@ -1,7 +1,7 @@
 name: charmed-postgresql
 base: ubuntu@24.04
 version: '16.10'
-summary: PostgreSQL in a rock.
+summary: Charmed PostgreSQL rock OCI
 description: |
     The PostgreSQL rock is created using the
     charmed-postgresql-snap and includes all of the
@@ -13,7 +13,7 @@ platforms:
     arm64:
 
 parts:
-    postgresql-snap:
+    charmed-postgresql:
         plugin: nil
         stage-snaps:
             - charmed-postgresql/16/edge/neppel
@@ -22,6 +22,7 @@ parts:
         overlay-packages:
             - ca-certificates
             - tzdata
+            - python3
             - logrotate
             - libfreetype6
             - libjson-c5
@@ -32,21 +33,17 @@ parts:
             - libevent-2.1-7t64
     non-root-user:
         plugin: nil
-        after: [postgresql-snap]
+        after:
+            - charmed-postgresql
         overlay-script: |
             # Create a user in the $CRAFT_OVERLAY chroot
             groupadd -R $CRAFT_OVERLAY -g  584788 postgres
-            useradd -R $CRAFT_OVERLAY -M -r -g postgres -u 584788 postgres
+            useradd -R $CRAFT_OVERLAY -m -r -g postgres -u 584788 postgres
         override-prime: |
             craftctl default
-            # This is only needed until this bug is resolved with pebble
-            # https://github.com/canonical/pebble/issues/189
-            mkdir -p $CRAFT_PRIME/home/postgres
             array=( .bash_logout .bashrc .profile )
-            for i in "${array[@]}"
-            do
+            for i in "${array[@]}"; do
                 cp /etc/skel/"$i" $CRAFT_PRIME/home/postgres
-                chown 584788 $CRAFT_PRIME/home/postgres/"$i"
             done
             chown -R 584788 $CRAFT_PRIME/var/log/pgbackrest
             chown -R 584788 $CRAFT_PRIME/var/log/postgresql
