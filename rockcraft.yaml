@@ -17,8 +17,6 @@ parts:
         plugin: nil
         stage-snaps:
             - charmed-postgresql/16/edge/neppel
-        stage-packages:
-            - python3
         overlay-packages:
             - ca-certificates
             - tzdata
