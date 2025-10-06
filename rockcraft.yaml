@@ -82,3 +82,11 @@ parts:
                 ln -f postgis_topology-3.control postgis_topology.control
                 ln -f postgis_topology-3.control postgis_topology.control
             popd
+    pebble-patroni-checker:
+        plugin: dump
+        source: .
+        source-type: local
+        organize:
+            local/scripts: scripts
+        stage:
+            - -local
