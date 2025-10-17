@@ -13,15 +13,14 @@ permissions:
 jobs:
   build:
     name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v32.2.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v35.0.2
   scan:
     name: Trivy scan
     needs: build
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
       - name: Install required dependencies
         run: |
           # rockcraft
@@ -29,30 +28,26 @@ jobs:
 
           # yq
           sudo snap install yq
-
       - name: Download rock package(s)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           pattern: ${{ needs.build.outputs.artifact-prefix }}-*
           merge-multiple: true
-
       - name: Import locally
         run: |
           full_version="$(yq .version rockcraft.yaml)"
           sudo rockcraft.skopeo --insecure-policy copy \
               "oci-archive:charmed-postgresql_${full_version}_amd64.rock" \
               "docker-daemon:trivy/charmed-postgresql:test"
-
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: "trivy/charmed-postgresql:test"
           format: "sarif"
           output: "trivy-results.sarif"
-          severity: "MEDIUM,HIGH,CRITICAL"
-
+          severity: "HIGH,CRITICAL"
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
