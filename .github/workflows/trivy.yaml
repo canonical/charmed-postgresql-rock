@@ -13,7 +13,7 @@ permissions:
 jobs:
   build:
     name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v37.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v37.0.1
   scan:
     name: Trivy scan
     needs: build
