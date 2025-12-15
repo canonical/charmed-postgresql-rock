@@ -42,7 +42,7 @@ jobs:
       - name: Install Syft
         run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
       - name: Download rock package(s)
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: ${{ needs.build.outputs.artifact-prefix }}-*
           merge-multiple: true
@@ -58,7 +58,7 @@ jobs:
                   check=True,
               )
       - name: Upload SBOM(s)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: sbom-${{ needs.build.outputs.artifact-prefix }}
           path: '*.spdx.json'
