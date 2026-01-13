@@ -71,7 +71,8 @@ def test_version():
         name = rockcraft["name"]
         version = rockcraft["version"]
         app_version = (
-            subprocess.check_output([
+            subprocess
+            .check_output([
                 "docker",
                 "run",
                 "--entrypoint",
