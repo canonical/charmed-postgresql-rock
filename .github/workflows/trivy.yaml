@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 16-24.04
+      - test
   pull_request:
   workflow_dispatch:
 
