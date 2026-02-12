@@ -5,10 +5,13 @@ on:
   push:
     branches:
       - 16-24.04
+      - test
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read  # Set the GITHUB_TOKEN permissions to read-only
+  security-events: write  # Required for uploading Trivy SARIF results
 
 jobs:
   build:
