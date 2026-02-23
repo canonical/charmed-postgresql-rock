@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read  # Set the GITHUB_TOKEN permissions to read-only
+  security-events: write  # Required for uploading Trivy SARIF results
 
 jobs:
   build:
