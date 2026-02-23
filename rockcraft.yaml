@@ -24,9 +24,7 @@ parts:
             - logrotate
             - libfreetype6
             - libjson-c5
-            - libssh-4
             - libtirpc-dev
-            - liblapack3
             - libedit2
             - libevent-2.1-7t64
     non-root-user:
