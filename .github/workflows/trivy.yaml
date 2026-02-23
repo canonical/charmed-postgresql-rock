@@ -40,7 +40,7 @@ jobs:
               "oci-archive:charmed-postgresql_${full_version}_amd64.rock" \
               "docker-daemon:trivy/charmed-postgresql:test"
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.0
         with:
           image-ref: "trivy/charmed-postgresql:test"
           format: "sarif"
