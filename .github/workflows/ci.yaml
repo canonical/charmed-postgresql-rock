@@ -30,8 +30,9 @@ jobs:
           sudo apt --purge remove postgresql*
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Install tox & poetry
+      - name: Install rockcraft, tox & poetry
         run: |
+          sudo snap install rockcraft --classic
           pipx install tox
           pipx install poetry
       - name: Download rock(s)
