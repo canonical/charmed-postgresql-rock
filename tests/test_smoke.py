@@ -12,7 +12,7 @@ def test_upload():
         version = rockcraft["version"]
 
         subprocess.run([
-            "skopeo",
+            "rockcraft.skopeo",
             "copy",
             f"oci-archive:{name}_{version}_amd64.rock",
             f"docker-daemon:{name}:test",
