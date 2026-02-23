@@ -3,6 +3,7 @@ base: ubuntu@24.04
 version: '16.11'
 summary: Charmed PostgreSQL rock OCI
 description: |
+    TEST
     The PostgreSQL rock is created using the
     charmed-postgresql-snap and includes all of the
     components needed to run PostgreSQL in your Kubernetes
