@@ -30,7 +30,7 @@ jobs:
           # yq
           sudo snap install yq
       - name: Download rock package(s)
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: ${{ needs.build.outputs.artifact-prefix }}-*
           merge-multiple: true
