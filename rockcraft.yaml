@@ -80,6 +80,11 @@ parts:
                 ln -f postgis_topology-3.control postgis_topology.control
                 ln -f postgis_topology-3.control postgis_topology.control
             popd
+            # Blas and lapack
+            pushd "${CRAFT_PRIME}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}"
+                ln -s ./lapack/* .
+                ln -s ./blas/* .
+            popd
     pebble-patroni-checker:
         plugin: dump
         source: .
