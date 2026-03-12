@@ -65,3 +65,9 @@ jobs:
           name: sbom-${{ needs.build.outputs.artifact-prefix }}
           path: '*.spdx.json'
           if-no-files-found: error
+  trivy:
+    permissions:
+      contents: read  # Set the GITHUB_TOKEN permissions to read-only
+      security-events: write  # Required for uploading Trivy SARIF results
+    name: Trivy Scan
+    uses: ./.github/workflows/trivy.yaml
