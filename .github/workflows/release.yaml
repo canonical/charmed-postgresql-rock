@@ -15,18 +15,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v42.0.1
+  ci-tests:
+    name: Tests
+    uses: ./.github/workflows/ci.yaml
     permissions: {}
 
   release:
     name: Release rock
     needs:
-      - build
+      - ci-tests
     uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v42.0.1
     with:
-      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+      artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     permissions:
       packages: write  # Needed to publish to GitHub Container Registry
       contents: write  # Needed to create GitHub release
@@ -34,7 +34,7 @@ jobs:
   sbom:
     name: Generate Software Bill of Materials
     needs:
-      - build
+      - ci-tests
       # Run after release so that rock cannot be (maliciously) modified between build & release
       - release
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
       - name: Download rock package(s)
         uses: actions/download-artifact@v8
         with:
-          pattern: ${{ needs.build.outputs.artifact-prefix }}-*
+          pattern: ${{ needs.ci-tests.outputs.artifact-prefix }}-*
           merge-multiple: true
       - name: Generate SBOM(s)
         shell: python
@@ -62,7 +62,7 @@ jobs:
       - name: Upload SBOM(s)
         uses: actions/upload-artifact@v7
         with:
-          name: sbom-${{ needs.build.outputs.artifact-prefix }}
+          name: sbom-${{ needs.ci-tests.outputs.artifact-prefix }}
           path: '*.spdx.json'
           if-no-files-found: error
   trivy:
