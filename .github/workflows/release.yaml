@@ -66,6 +66,9 @@ jobs:
           path: '*.spdx.json'
           if-no-files-found: error
   trivy:
+    needs:
+      # Checks the pushed tag
+      - release
     permissions:
       contents: read  # Set the GITHUB_TOKEN permissions to read-only
       security-events: write  # Required for uploading Trivy SARIF results
