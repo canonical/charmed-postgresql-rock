@@ -2,10 +2,6 @@
 # See LICENSE file for licensing details.
 name: Release to GHCR
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 on:
   push:
     branches:
