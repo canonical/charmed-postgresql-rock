@@ -2,10 +2,6 @@
 # See LICENSE file for licensing details.
 name: Release to GHCR
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 on:
   push:
     branches:
@@ -65,3 +61,12 @@ jobs:
           name: sbom-${{ needs.ci-tests.outputs.artifact-prefix }}
           path: '*.spdx.json'
           if-no-files-found: error
+  trivy:
+    needs:
+      # Checks the pushed tag
+      - release
+    permissions:
+      contents: read  # Set the GITHUB_TOKEN permissions to read-only
+      security-events: write  # Required for uploading Trivy SARIF results
+    name: Trivy Scan
+    uses: ./.github/workflows/trivy.yaml

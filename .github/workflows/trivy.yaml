@@ -2,22 +2,14 @@
 # See LICENSE file for licensing details.
 name: Trivy Security Scanner
 on:
-  push:
-    branches:
-      - 14-22.04
-  pull_request:
+  workflow_call:
 
 permissions:
-  contents: read  # Set the GITHUB_TOKEN permissions to read-only
   security-events: write  # Required for uploading Trivy SARIF results
 
 jobs:
-  build:
-    name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v42.0.1
   scan:
     name: Trivy scan
-    needs: build
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repo
@@ -27,23 +19,16 @@ jobs:
           # rockcraft
           sudo snap install rockcraft --classic --edge
 
-          # yq
-          sudo snap install yq
-      - name: Download rock package(s)
-        uses: actions/download-artifact@v8
-        with:
-          pattern: ${{ needs.build.outputs.artifact-prefix }}-*
-          merge-multiple: true
-      - name: Import locally
+          # jq
+          sudo snap install jq
+      - name: Find rock tag
+        id: rock-tag
         run: |
-          full_version="$(yq .version rockcraft.yaml)"
-          sudo rockcraft.skopeo --insecure-policy copy \
-              "oci-archive:charmed-postgresql_${full_version}_amd64.rock" \
-              "docker-daemon:trivy/charmed-postgresql:test"
+          echo "tag=$(rockcraft.skopeo list-tags docker://ghcr.io/canonical/charmed-postgresql | jq -r '.Tags | map(select(startswith("14.")))| max_by(split(".")[1] | split("-")[0] | tonumber)')" >> "$GITHUB_OUTPUT"
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.35.0
         with:
-          image-ref: "trivy/charmed-postgresql:test"
+          image-ref: "ghcr.io/canonical/charmed-postgresql:${{steps.rock-tag.outputs.tag }}"
           format: "sarif"
           output: "trivy-results.sarif"
           severity: "HIGH,CRITICAL"
