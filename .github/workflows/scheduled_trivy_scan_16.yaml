@@ -1,0 +1,18 @@
+name: Trivy scheduler scan (16-24.04)
+on:
+  # GitHub will only trigger workflows `on: schedule` for workflow files in the default GitHub branch
+  schedule:
+    - cron: '53 23 * * 3'  # Wednesday at 23:53 UTC
+
+jobs:
+  trigger:
+    name: Trigger workflow on branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger workflow
+        run: gh workflow --repo '${{ github.repository }}' run trivy.yaml --ref '16-24.04'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      actions: write  # Needed to trigger workflow
