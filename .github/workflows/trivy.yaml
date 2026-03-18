@@ -31,8 +31,6 @@ jobs:
           image-ref: "ghcr.io/canonical/charmed-postgresql:${{steps.rock-tag.outputs.tag }}"
           format: "sarif"
           output: "trivy-results.sarif"
-          severity: "HIGH,CRITICAL"
-          limit-severities-for-sarif: true
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         if: always()
