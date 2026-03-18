@@ -1,3 +1,4 @@
+name: Trivy scheduler scan (14-22.04)
 on:
   # GitHub will only trigger workflows `on: schedule` for workflow files in the default GitHub branch
   schedule:
