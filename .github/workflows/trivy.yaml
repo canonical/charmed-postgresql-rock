@@ -3,6 +3,8 @@
 name: Trivy Security Scanner
 on:
   workflow_call:
+  # Dispatched by scheduler
+  workflow_dispatch:
 
 permissions:
   security-events: write  # Required for uploading Trivy SARIF results
