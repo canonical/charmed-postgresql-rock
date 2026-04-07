@@ -20,7 +20,7 @@ jobs:
     name: Release rock
     needs:
       - ci-tests
-    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v42.0.1
+    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v42.1.0
     with:
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     permissions:
