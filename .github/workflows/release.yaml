@@ -14,18 +14,21 @@ jobs:
   ci-tests:
     name: Tests
     uses: ./.github/workflows/ci.yaml
-    permissions: {}
+    permissions:
+      actions: read  # Needed for GitHub API call to get workflow version
+      contents: read
 
   release:
     name: Release rock
     needs:
       - ci-tests
-    uses: canonical/data-platform-workflows/.github/workflows/release_rock.yaml@v42.0.1
+    uses: canonical/data-platform-workflows/.github/workflows/release_rock_edge.yaml@v48.0.4
     with:
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     permissions:
+      actions: read  # Needed for GitHub API call to get workflow version
       packages: write  # Needed to publish to GitHub Container Registry
-      contents: write  # Needed to create GitHub release
+      contents: write  # Needed to create git tags
 
   sbom:
     name: Generate Software Bill of Materials
@@ -35,10 +38,13 @@ jobs:
       - release
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions: {}
     steps:
       - name: Install Syft
-        run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+        run: |
+          gh release --repo anchore/syft download --pattern '*_linux_amd64.deb' --output syft.deb
+          sudo apt-get install -y ./syft.deb
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download rock package(s)
         uses: actions/download-artifact@v8
         with:
@@ -61,11 +67,13 @@ jobs:
           name: sbom-${{ needs.ci-tests.outputs.artifact-prefix }}
           path: '*.spdx.json'
           if-no-files-found: error
+    permissions: {}
+
   trivy:
     needs:
       # Checks the pushed tag
       - release
-    permissions:
-      security-events: write  # Required for uploading Trivy SARIF results
     name: Trivy Scan
     uses: ./.github/workflows/trivy.yaml
+    permissions:
+      security-events: write  # Required for uploading Trivy SARIF results
