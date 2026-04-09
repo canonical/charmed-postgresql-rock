@@ -6,9 +6,6 @@ on:
   # Dispatched by scheduler
   workflow_dispatch:
 
-permissions:
-  security-events: write  # Required for uploading Trivy SARIF results
-
 jobs:
   scan:
     name: Trivy scan
@@ -16,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Install required dependencies
         run: |
           # rockcraft
@@ -38,3 +37,5 @@ jobs:
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
+    permissions:
+      security-events: write  # Required for uploading Trivy SARIF results
