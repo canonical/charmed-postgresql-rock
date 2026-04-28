@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "tag=$(rockcraft.skopeo list-tags docker://ghcr.io/canonical/charmed-postgresql | jq -r '.Tags | map(select(startswith("16.")))| max_by(split(".")[1] | split("-")[0] | tonumber)')" >> "$GITHUB_OUTPUT"
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: "ghcr.io/canonical/charmed-postgresql:${{steps.rock-tag.outputs.tag }}"
           format: "sarif"
