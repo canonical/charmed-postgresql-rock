@@ -1,6 +1,6 @@
 name: charmed-postgresql
 base: ubuntu@24.04
-version: '16.13'
+version: '16.14'
 summary: Charmed PostgreSQL rock OCI
 description: |
     The PostgreSQL rock is created using the
