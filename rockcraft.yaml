@@ -1,6 +1,6 @@
 name: charmed-postgresql
 base: ubuntu@22.04
-version: '14.22'
+version: '14.23'
 summary: PostgreSQL in a rock.
 description: |
     The PostgreSQL rock is created using the
