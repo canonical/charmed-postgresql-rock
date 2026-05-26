@@ -19,13 +19,13 @@ parts:
             - charmed-postgresql/14/edge
         stage-packages:
             - ca-certificates
-            - tzdata
             - logrotate
             - libfreetype6
             - libjson-c5
             - libedit2
             - libssh-4
             - python3
+            - tzdata
     non-root-user:
         plugin: nil
         after: [postgresql-snap]
