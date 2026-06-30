@@ -15,7 +15,6 @@ jobs:
     name: Tests
     uses: ./.github/workflows/ci.yaml
     permissions:
-      actions: read  # Needed for GitHub API call to get workflow version
       contents: read
 
   release:
@@ -26,7 +25,6 @@ jobs:
     with:
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     permissions:
-      actions: read  # Needed for GitHub API call to get workflow version
       packages: write  # Needed to publish to GitHub Container Registry
       contents: write  # Needed to create git tags
 
