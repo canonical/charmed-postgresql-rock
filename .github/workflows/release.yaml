@@ -15,18 +15,16 @@ jobs:
     name: Tests
     uses: ./.github/workflows/ci.yaml
     permissions:
-      actions: read  # Needed for GitHub API call to get workflow version
       contents: read
 
   release:
     name: Release rock
     needs:
       - ci-tests
-    uses: canonical/data-platform-workflows/.github/workflows/release_rock_edge.yaml@v49.0.4
+    uses: canonical/data-platform-workflows/.github/workflows/release_rock_edge.yaml@v50.0.0
     with:
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     permissions:
-      actions: read  # Needed for GitHub API call to get workflow version
       packages: write  # Needed to publish to GitHub Container Registry
       contents: write  # Needed to create git tags
 
