@@ -18,7 +18,7 @@ on:
 jobs:
   lint-workflows:
     name: Lint .github/workflows/
-    uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.1.0
+    uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.2.1
     permissions:
       contents: read
 
@@ -41,7 +41,7 @@ jobs:
 
   build:
     name: Build rock
-    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v50.1.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_rock.yaml@v50.2.1
     permissions:
       contents: read
 
