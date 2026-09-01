@@ -13,7 +13,7 @@ on:
 jobs:
   ci-tests:
     name: Tests
-    uses: ./.github/workflows/ci.yaml
+    uses: $/.github/workflows/ci.yaml
     permissions:
       contents: read
 
@@ -72,6 +72,6 @@ jobs:
       # Checks the pushed tag
       - release
     name: Trivy Scan
-    uses: ./.github/workflows/trivy.yaml
+    uses: $/.github/workflows/trivy.yaml
     permissions:
       security-events: write  # Required for uploading Trivy SARIF results
