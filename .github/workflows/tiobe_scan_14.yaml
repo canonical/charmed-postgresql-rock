@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
-          ref: main
+          ref: 14-22.04
 
       - name: Create and activate virtual environment
         run: |
