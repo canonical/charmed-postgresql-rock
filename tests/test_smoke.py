@@ -84,3 +84,32 @@ def test_version():
             .split(" ")[2]
         )
         assert version == app_version
+
+
+def test_pg_cron_files():
+    with open("rockcraft.yaml") as file:
+        rockcraft = yaml.safe_load(file)
+
+    name = rockcraft["name"]
+    major_version = rockcraft["version"].split(".")[0]
+    subprocess.run(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--entrypoint",
+            "/bin/sh",
+            f"{name}:test",
+            "-ec",
+            f"""
+test -s /usr/lib/postgresql/{major_version}/lib/pg_cron.so
+test -s /usr/share/postgresql/{major_version}/extension/pg_cron.control
+test -s /licenses/COPYRIGHT-pg-cron
+set -- /usr/share/postgresql/{major_version}/extension/pg_cron--*.sql
+for script do
+    test -s "$script"
+done
+""",
+        ],
+        check=True,
+    )
