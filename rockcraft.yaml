@@ -16,7 +16,7 @@ parts:
     charmed-postgresql:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/16/edge
+            - charmed-postgresql/16/edge/pg-cron
         overlay-packages:
             - ca-certificates
             - tzdata
