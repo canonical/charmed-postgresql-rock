@@ -17,6 +17,8 @@ parts:
         plugin: nil
         stage-snaps:
             - charmed-postgresql/16/edge
+        stage-packages:
+            - zstd
         overlay-packages:
             - ca-certificates
             - tzdata
