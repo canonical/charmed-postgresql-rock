@@ -1,6 +1,6 @@
 name: charmed-postgresql
 base: ubuntu@24.04
-version: '16.15'
+version: '16.16'
 summary: Charmed PostgreSQL rock OCI
 description: |
     The PostgreSQL rock is created using the
@@ -16,7 +16,7 @@ parts:
     charmed-postgresql:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/16/edge
+            - charmed-postgresql/16/edge/pg1616
         stage-packages:
             - zstd
         overlay-packages:
