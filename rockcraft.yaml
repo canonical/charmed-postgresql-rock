@@ -1,6 +1,6 @@
 name: charmed-postgresql
 base: ubuntu@22.04
-version: '14.24'
+version: '14.25'
 summary: PostgreSQL in a rock.
 description: |
     The PostgreSQL rock is created using the
@@ -16,7 +16,7 @@ parts:
     postgresql-snap:
         plugin: nil
         stage-snaps:
-            - charmed-postgresql/14/edge
+            - charmed-postgresql/14/edge/pg1425
         stage-packages:
             - logrotate
             - libfreetype6
